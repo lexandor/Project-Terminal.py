@@ -1,3 +1,12 @@
+#TODO: Добавить проверку на существование базы данных
+#TODO: Добавить возможность просматривать содержание
+#TODO: Добавить возможность редактировать записи
+#TODO: Сделать визуальное оформлнеие (цвет шрифтов)
+#TODO: Реализовать поиск по записям
+#TODO: Пофиксить перскок NUM при работе со списком записей
+
+
+
 import sqlite3
 import datetime
 
@@ -35,6 +44,7 @@ def create():
     #print(title, "|", time, "|", content) #DEBUG
     
 def createDEBUG():
+    # Создает таблицу со значениями от 1 до 100. Нужно для дебагинга
     for i in range(100):
         title = str(i)
         time = str(i)
@@ -80,10 +90,12 @@ def read():
         if action == '0' or action == 'e':
             break
         elif action.lower() == 'l':
+            # Выводит предидущую страницу
             rows = pullContent(num, OFFSET) # отступ в базе вверх на 10
             num = printRows(rows, num)
             num -= 20
         elif action.lower() == 'r':
+            # Выводит следующую страницу
             rows = pullContent(num, OFFSET) # отступ в базе вниз на 10
             num = printRows(rows, num)
         elif action == 'a' or action == 'all':
@@ -97,32 +109,46 @@ def read():
     
 
 def createDB():
+    # Создает базу данных
     conn = sqlite3.connect('DailyBook.sqlite')
     cursor = conn.cursor()
     cursor.execute('''CREATE TABLE if not exists Days (title text, time text, content text)''')
     conn.close()
     print('Таблица создана!')
 
-while True:
-    print('========================')
-    print('Zenda Oracle \n')
+def MAIN():
+    # Приложение
+    while True:
+        print('========================')
+        print('Zenda Oracle \n')
 
-    doing = input(
-        " Menu: \n 1. Создать запись \n 2. Редактировать запись \n 3. Просмотреть запись \n 4. Создать базу данных \n >> "
-    )
+        doing = input(
+            " Menu: \n 1. Создать запись \n 2. Помощь \n 3. Просмотреть запись \n 4. Создать базу данных \n >> "
+        )
 
-    if doing == '1':
-        create()
-    elif doing == '2':
-        pass
-    elif doing == '3':
-        read()
-    elif doing == '4':
-        createDB()
-    elif doing == 'db':
-        createDEBUG()
-    elif doing == 'exit' or doing == 'e':
-        break
-    else:
-        print('Нет такого действия')
+        if doing == '1':
+            create()
+        elif doing == '2' or doing == 'help' or doing == 'h':
+            print('\n ' + '{0: ^30}'.format('О ПРИЛОЖЕНИИ') + '''
+ Приложение является реализацией старомодного терминала для записи, 
+ чтения и редактирования заметок. \n
+ Данный проект является тренровочным. В частности для отработки навыков работы 
+ с базами данных(sqlite3) \n
+ ''' + ' ' + '{0: ^30}'.format('ОБ АВТОРЕ') + '''
+ author: PLEXER
+ github: https://github.com/lexandor
+ lang: Python 3.1.7
+ ''')  
+        elif doing == '3':
+            read()
+        elif doing == '4':
+            createDB()
+        elif doing == 'db':
+            createDEBUG()
+        elif doing == 'exit' or doing == 'e':
+            break
+        else:
+            print('Нет такого действия')
+
+MAIN()
 

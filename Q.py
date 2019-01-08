@@ -72,7 +72,6 @@ def read():
 
     rows = pullContent()
     num = printRows(rows)
-    print('g: ' + str(num))
 
     while True: # Выбор записей
         print('__________________ \n')
@@ -81,13 +80,10 @@ def read():
         if action == '0' or action == 'e':
             break
         elif action.lower() == 'l':
-            print('l St: ' + str(num))
             rows = pullContent(num, OFFSET) # отступ в базе вверх на 10
-            print('l Mid ' +  str(num))
             num = printRows(rows, num)
-            print('l End: ' + str(num))
+            num -= 20
         elif action.lower() == 'r':
-            print('r St: ' + str(num))
             rows = pullContent(num, OFFSET) # отступ в базе вниз на 10
             num = printRows(rows, num)
         elif action == 'a' or action == 'all':
